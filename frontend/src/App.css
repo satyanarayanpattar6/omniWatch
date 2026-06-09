@@ -1,0 +1,236 @@
+/* 🏢 Enterprise Bright Design System Tokens */
+:root {
+  --bg-gradient: linear-gradient(135deg, #eef2f7 0%, #dfe6f0 100%);
+  --bg-panel: #ffffff;
+  --bg-stripe: #f8fafc;
+  --bg-th: #f1f5f9;
+  --bg-verdict: #f0f6ff;
+  
+  --text-main: #334155;
+  --text-title: #0f172a;
+  --text-muted: #64748b;
+  --text-accent: #2563eb;
+  
+  --accent-blue: #2563eb;
+  --accent-green: #10b981;
+  --accent-amber: #d97706;
+  --accent-error: #ef4444;
+  
+  --border-color: #e2e8f0;
+  --radius-xl: 16px;
+  --radius-md: 10px;
+  --radius-sm: 6px;
+  
+  --shadow-panel: 0 20px 25px -5px rgb(0 0 0 / 0.05), 0 8px 10px -6px rgb(0 0 0 / 0.05);
+}
+
+.app-viewport {
+  min-height: 100vh;
+  background: var(--bg-gradient);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding: 3rem 1.5rem;
+  color: var(--text-main);
+  box-sizing: border-box;
+}
+
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header Architecture */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  background: var(--bg-panel);
+  padding: 1.5rem 2rem;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-panel);
+  border: 1px solid var(--border-color);
+}
+
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pulse-indicator {
+  width: 10px;
+  height: 10px;
+  background-color: var(--accent-green);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+  animation: telemetryPulse 2s infinite;
+}
+
+@keyframes telemetryPulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.header-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-title);
+  margin: 0;
+  letter-spacing: -0.03em;
+}
+
+.sync-status {
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: rgba(37, 99, 235, 0.06);
+  color: var(--text-accent);
+  padding: 0.4rem 0.85rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(37, 99, 235, 0.1);
+}
+
+/* Core Data Table Panel */
+.table-panel-card {
+  background: var(--bg-panel);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-panel);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  padding: 1.5rem;
+}
+
+.table-scroll-container {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.executive-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  min-width: 900px;
+}
+
+.th-group {
+  background: var(--bg-th);
+  border-bottom: 2px solid var(--border-color);
+}
+
+.executive-th {
+  padding: 1.1rem 1.25rem;
+  font-weight: 700;
+  font-size: 0.825rem;
+  color: var(--text-title);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.executive-row {
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.15s ease;
+}
+
+.executive-row:hover {
+  background-color: var(--bg-stripe);
+}
+
+.td-product-name {
+  padding: 1.25rem;
+  font-weight: 700;
+  color: var(--text-title);
+  font-size: 1rem;
+  width: 22%;
+}
+
+.td-marketplace-data {
+  padding: 1.25rem;
+  vertical-align: top;
+  width: 28%;
+}
+
+.listing-title-box {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-title);
+  line-height: 1.4;
+  margin-bottom: 0.4rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.price-pill-tag {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: Menlo, Monaco, Consolas, monospace;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-sm);
+}
+
+.price-pill-tag.amazon {
+  background-color: #fef3c7;
+  color: var(--accent-amber);
+}
+
+.price-pill-tag.flipkart {
+  background-color: #dbeafe;
+  color: var(--text-accent);
+}
+
+.snippet-text-box {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.td-ai-compliance {
+  padding: 1.25rem;
+  vertical-align: top;
+  width: 22%;
+}
+
+/* Custom In-Table AI Audit Card */
+.inline-audit-badge {
+  background: var(--bg-verdict);
+  border: 1px solid rgba(37, 99, 235, 0.12);
+  border-left: 3px solid var(--accent-blue);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem;
+}
+
+.audit-badge-header {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent-blue);
+  letter-spacing: 0.05em;
+  margin: 0 0 0.25rem 0;
+}
+
+.audit-badge-body {
+  margin: 0;
+  font-size: 0.825rem;
+  line-height: 1.4;
+  color: #1e3a8a;
+}
+
+/* Loading Spinner Configuration */
+.spinner-container {
+  text-align: center;
+  padding: 6rem 0;
+}
+
+.corporate-spinner {
+  width: 44px;
+  height: 44px;
+  border: 4px solid var(--border-color);
+  border-top-color: var(--accent-blue);
+  border-radius: 50%;
+  animation: spinCorp 0.8s linear infinite;
+  margin: 0 auto 1.25rem auto;
+}
+
+@keyframes spinCorp { to { transform: rotate(360deg); } }
