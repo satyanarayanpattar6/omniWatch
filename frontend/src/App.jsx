@@ -20,6 +20,8 @@ export default function App() {
 
     try {
       const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+      BACKEND_URL = BACKEND_URL.replace(/\/+$/, '');
+
       const response = await fetch(`${BACKEND_URL}/api/compare-matrix`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
