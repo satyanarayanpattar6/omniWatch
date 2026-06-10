@@ -42,12 +42,12 @@ export default function App() {
     <div className="app-viewport">
       <div className="app-container">
         
-        {/* Sync Controls Header Banner */}
+        {/* Clean Global Control Bar */}
         <header className="console-header">
-          <h1 className="header-title">OmniWatch Analytical Engine Console</h1>
+          <h1 className="header-title">OmniWatch Analytical Engine</h1>
           {matrixOutput?.timestamp && (
             <div className="timestamp-pill">
-              ⏱️ SYNC UPDATED: {new Date(matrixOutput.timestamp).toLocaleTimeString()}
+              ⏱️ LIVE SYNC: {new Date(matrixOutput.timestamp).toLocaleTimeString()}
             </div>
           )}
         </header>
@@ -81,7 +81,7 @@ export default function App() {
                 className="interactive-input"
                 maxLength={6}
                 value={userPincode}
-                onChange={(e) => setUserPincode(e.target.value.replace(/\D/g, ''))} // Strips text inputs defensively
+                onChange={(e) => setUserPincode(e.target.value.replace(/\D/g, ''))}
               />
             </div>
           </div>
@@ -97,7 +97,7 @@ export default function App() {
         {systemError && <div className="error-banner">⚠️ <strong>SYSTEM FAULT:</strong> {systemError}</div>}
         {isProcessing && <div className="spinner-container"><div className="corporate-spinner"></div><p style={{ color: 'var(--text-muted)' }}>Compiling remote data vectors...</p></div>}
 
-        {/* Executive Tabular Grid Presentation Layout */}
+        {/* Master Tabular Data Matrix Presentation Layer */}
         {matrixOutput && !isProcessing && (
           <div className="table-panel-card">
             <div className="table-scroll-container">
@@ -113,7 +113,6 @@ export default function App() {
                 <tbody>
                   <tr className="executive-row">
                     
-                    {/* COL 1: Item Profile (Name, Thumbnail avatar, and Rating markers) */}
                     <td className="td-product-profile">
                       <div className="product-profile-box">
                         <img 
@@ -129,14 +128,12 @@ export default function App() {
                       </div>
                     </td>
 
-                    {/* COL 2: AI-Extracted Specific Parameters Block */}
                     <td className="td-specs-block">
                       <div className="extracted-features-box">
                         {matrixOutput.aiExtractedSpecs}
                       </div>
                     </td>
 
-                    {/* COL 3: Stock Levels & Pincode Routing Logistics */}
                     <td className="td-logistic-node">
                       <span className="status-stock-pill">{matrixOutput.inStock}</span>
                       <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.2rem' }}>
@@ -147,7 +144,6 @@ export default function App() {
                       </div>
                     </td>
 
-                    {/* COL 4: Channel Sourcing Matrix with Links */}
                     <td className="td-channel-pricing">
                       <div className="channel-price-group">
                         <span className="platform-label-tag">Amazon India Node</span>
@@ -172,14 +168,12 @@ export default function App() {
 
             {/* Premium Native SVG Chart Section */}
             <div className="chart-container-panel">
-              <h3 className="chart-title">📈 Premium Price Trajectory Analysis Engine (1-Year Volatility Curve)</h3>
+              <h3 className="chart-title">📊 Price Trajectory Analysis Engine (1-Year Volatility Curve)</h3>
               <div className="graph-display-canvas">
                 <svg viewBox="0 0 1000 200" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
-                  {/* Axis Grids */}
                   <line x1="50" y1="10" x2="50" y2="170" className="svg-axis-line" />
                   <line x1="50" y1="170" x2="980" y2="170" className="svg-axis-line" />
                   
-                  {/* Map dynamic trend coordinates into a single elegant SVG polyline string */}
                   {(() => {
                     const priceArray = matrixOutput.priceHistory.map(h => h.price);
                     const maxVal = Math.max(...priceArray) * 1.15;
@@ -187,7 +181,6 @@ export default function App() {
                     
                     const points = matrixOutput.priceHistory.map((h, idx) => {
                       const x = 50 + (idx * (930 / (matrixOutput.priceHistory.length - 1)));
-                      // Convert currency scales proportionally onto chart pixels inverse axis mapping
                       const y = 170 - ((h.price - minVal) / (maxVal - minVal)) * 150;
                       return { x, y, price: h.price, date: h.date };
                     });
@@ -222,10 +215,10 @@ export default function App() {
                 {matrixOutput.similarItems?.map((altNode, idx) => (
                   <div key={idx} className="alt-item-card">
                     <div>
-                      <div className="alt-meta-name">{altNode.name}</div>
-                      <div className="alt-meta-platform">Target: {altNode.platform}</div>
+                      <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-title)' }}>{altNode.name}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Target: {altNode.platform}</div>
                     </div>
-                    <div className="alt-meta-price">{altNode.price}</div>
+                    <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--accent-green)', fontFamily: 'monospace' }}>{altNode.price}</div>
                   </div>
                 ))}
               </div>

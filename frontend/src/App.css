@@ -1,26 +1,35 @@
+/* 🏢 OmniWatch Executive Bright Design System Tokens */
 :root {
-  --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  --bg-gradient: linear-gradient(135deg, #eef2f7 0%, #dfe6f0 100%);
   --bg-panel: #ffffff;
   --bg-stripe: #f8fafc;
-  --bg-blue-badge: #eff6ff;
+  --bg-th: #f1f5f9;
+  --bg-verdict: #f0f6ff;
   
   --text-title: #0f172a;
   --text-main: #334155;
   --text-muted: #64748b;
+  --text-accent: #2563eb;
+  
   --accent-blue: #2563eb;
   --accent-green: #10b981;
+  --accent-amber: #d97706;
+  --accent-error: #ef4444;
   
   --border-color: #cbd5e1;
   --radius-xl: 16px;
   --radius-md: 10px;
   --radius-sm: 6px;
-  --shadow-ux: 0 20px 25px -5px rgba(0,0,0,0.05);
+  
+  --shadow-panel: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
 }
 
+/* Global Full-Width Viewport */
 .app-viewport {
   min-height: 100vh;
+  width: 100%;
   background: var(--bg-gradient);
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   padding: 3rem 1.5rem;
   color: var(--text-main);
   box-sizing: border-box;
@@ -31,21 +40,21 @@
   margin: 0 auto;
 }
 
-/* Control Header Console Bar */
+/* Control Header Layout */
 .console-header {
   background: var(--bg-panel);
   padding: 1.5rem 2rem;
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-ux);
+  box-shadow: var(--shadow-panel);
   margin-bottom: 2.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  border: 1px solid #e2e8f0;
 }
 
 .header-title {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 800;
   color: var(--text-title);
   letter-spacing: -0.03em;
@@ -53,22 +62,23 @@
 }
 
 .timestamp-pill {
-  font-size: 0.8rem;
-  font-weight: 700;
-  background: rgba(16, 185, 129, 0.1);
-  color: var(--accent-green);
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: rgba(37, 99, 235, 0.06);
+  color: var(--text-accent);
   padding: 0.4rem 0.85rem;
   border-radius: 9999px;
+  border: 1px solid rgba(37, 99, 235, 0.1);
 }
 
-/* Three-Field Input Panel Card */
+/* Search Dashboard Panel */
 .search-card-panel {
   background: var(--bg-panel);
   padding: 2rem;
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-ux);
+  box-shadow: var(--shadow-panel);
   margin-bottom: 2.5rem;
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  border: 1px solid #e2e8f0;
 }
 
 .input-flex-container {
@@ -101,11 +111,12 @@
 .interactive-input {
   width: 100%;
   padding: 0.8rem 1rem;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   font-size: 0.95rem;
   outline: none;
   box-sizing: border-box;
+  background: #ffffff;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
@@ -132,12 +143,12 @@
   background-color: #1d4ed8;
 }
 
-/* Master Data Presentation Table */
+/* Data Table Presentation */
 .table-panel-card {
   background: var(--bg-panel);
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-ux);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: var(--shadow-panel);
+  border: 1px solid #e2e8f0;
   padding: 2rem;
   margin-bottom: 2.5rem;
 }
@@ -292,7 +303,7 @@
   text-decoration: underline;
 }
 
-/* 📊 Premium Analytical SVG Graph Layout */
+/* 📊 Premium SVG Trajectory Chart */
 .chart-container-panel {
   margin-top: 2.5rem;
   padding-top: 2rem;
@@ -307,7 +318,7 @@
 }
 
 .graph-display-canvas {
-  background: linear-gradient(to bottom, #ffffff, #f8fafc);
+  background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: var(--radius-md);
   padding: 1.5rem;
@@ -332,7 +343,7 @@
   font-weight: 600;
 }
 
-/* Alternatives Grid System */
+/* Alternatives Segment */
 .alternatives-section-box {
   margin-top: 2.5rem;
   padding-top: 2rem;
@@ -353,33 +364,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: border-color 0.15s;
 }
 
-.alt-item-card:hover {
-  border-color: #cbd5e1;
-}
-
-.alt-meta-name {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--text-title);
-  margin-bottom: 0.25rem;
-}
-
-.alt-meta-platform {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-}
-
-.alt-meta-price {
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: var(--accent-green);
-  font-family: monospace;
-}
-
-/* System States */
+/* System Communications Messages */
 .error-banner {
   padding: 1rem;
   background: #fef2f2;
