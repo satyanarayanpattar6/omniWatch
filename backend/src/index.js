@@ -7,7 +7,8 @@ import { OpenAI } from 'openai';
 const app = express();
 app.use(express.json());
 
-const allowedOrigins = [process.env.FRONTEND_URL, 'http://localhost:5173'];
+const allowedOrigins = [process.env.FRONTEND_URL, 'http://localhost:5173','https://omniwatchh.netlify.app'];
+
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) callback(null, true);
