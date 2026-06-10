@@ -1,130 +1,236 @@
-import { useInventoryStream } from './hooks/useInventoryStream';
+import { useState } from 'react';
 import './App.css';
 
 export default function App() {
-  const { data, loading, error } = useInventoryStream();
-  const productKeys = Object.keys(data.products || {});
+  const [itemKeyword, setItemKeyword] = useState('');
+  const [isolatedSpecs, setIsolatedSpecs] = useState('Warranty, Colors, Tech Specifications');
+  const [userPincode, setUserPincode] = useState('560001');
+  const [matrixOutput, setMatrixOutput] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [systemError, setSystemError] = useState(null);
+
+  const executeLiveSearchStream = async () => {
+    if (!itemKeyword.trim()) {
+      setSystemError("Please provide an active item keyword descriptor query.");
+      return;
+    }
+
+    setIsProcessing(true);
+    setSystemError(null);
+
+    try {
+      const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+      const response = await fetch(`${BACKEND_URL}/api/compare-matrix`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ item: itemKeyword, specs: isolatedSpecs, pincode: userPincode })
+      });
+
+      if (!response.ok) throw new Error(`Gateway dropped route socket: ${response.status}`);
+      
+      const parsedData = await response.json();
+      setMatrixOutput(parsedData);
+    } catch (err) {
+      console.error(err);
+      setSystemError(err instanceof Error ? err.message : "Operational backend network timeout.");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   return (
     <div className="app-viewport">
       <div className="app-container">
         
-        {/* Clean Global Control Bar */}
-        <header className="dashboard-header">
-          <div className="brand-group">
-            <div className="pulse-indicator"></div>
-            <h1 className="header-title">OmniWatch Business Console</h1>
-          </div>
-          <div className="sync-status">
-            {data.lastUpdated ? (
-              <span>🟢 Live Feed Sync: {new Date(data.lastUpdated).toLocaleTimeString()}</span>
-            ) : (
-              <span>🔄 Interrogating Nodes...</span>
-            )}
-          </div>
+        {/* Sync Controls Header Banner */}
+        <header className="console-header">
+          <h1 className="header-title">OmniWatch Analytical Engine Console</h1>
+          {matrixOutput?.timestamp && (
+            <div className="timestamp-pill">
+              ⏱️ SYNC UPDATED: {new Date(matrixOutput.timestamp).toLocaleTimeString()}
+            </div>
+          )}
         </header>
 
-        {/* System Error Message Boundary */}
-        {error && (
-          <div className="error-banner">
-            <strong>System Communication Error:</strong> {error}
+        {/* Three-Field Input Dash Panel */}
+        <div className="search-card-panel">
+          <div className="input-flex-container">
+            <div className="field-block">
+              <label className="field-label">Target Product Name</label>
+              <input 
+                type="text" 
+                className="interactive-input"
+                placeholder="e.g., Dell S-Series 27 Monitor, Sony XM5"
+                value={itemKeyword}
+                onChange={(e) => setItemKeyword(e.target.value)}
+              />
+            </div>
+            <div className="field-block">
+              <label className="field-label">Specifications Filters</label>
+              <input 
+                type="text" 
+                className="interactive-input"
+                value={isolatedSpecs}
+                onChange={(e) => setIsolatedSpecs(e.target.value)}
+              />
+            </div>
+            <div className="field-block pincode-size">
+              <label className="field-label">Regional Pincode</label>
+              <input 
+                type="text" 
+                className="interactive-input"
+                maxLength={6}
+                value={userPincode}
+                onChange={(e) => setUserPincode(e.target.value.replace(/\D/g, ''))} // Strips text inputs defensively
+              />
+            </div>
           </div>
-        )}
+          <button 
+            onClick={executeLiveSearchStream} 
+            disabled={isProcessing} 
+            className="action-submit-btn"
+          >
+            {isProcessing ? 'Interrogating Multi-Engine Cloud Nodes...' : 'Execute Arbitrage Search Run'}
+          </button>
+        </div>
 
-        {/* Clean Corporate Spinner */}
-        {loading && (
-          <div className="spinner-container">
-            <div className="corporate-spinner"></div>
-            <p style={{ color: 'var(--text-muted)', fontWeight: '500' }}>Accessing operational memory registers...</p>
-          </div>
-        )}
+        {systemError && <div className="error-banner">⚠️ <strong>SYSTEM FAULT:</strong> {systemError}</div>}
+        {isProcessing && <div className="spinner-container"><div className="corporate-spinner"></div><p style={{ color: 'var(--text-muted)' }}>Compiling remote data vectors...</p></div>}
 
-        {/* Main Tabular Presenter Grid */}
-        {!loading && productKeys.length > 0 && (
+        {/* Executive Tabular Grid Presentation Layout */}
+        {matrixOutput && !isProcessing && (
           <div className="table-panel-card">
             <div className="table-scroll-container">
               <table className="executive-table">
                 <thead>
                   <tr className="th-group">
-                    <th className="executive-th">Monitored Target</th>
-                    <th className="executive-th">Amazon India Feed</th>
-                    <th className="executive-th">Flipkart Channel Feed</th>
-                    <th className="executive-th">AI Arbitrage Intercept</th>
+                    <th className="executive-th">1) Name & 2) Image Baseline Profile</th>
+                    <th className="executive-th">3, 4, 5, 7) Feature Verification Metrics</th>
+                    <th className="executive-th">6 & 8) Logistics Scope</th>
+                    <th className="executive-th">Channel Pricing & Purchase Hooks</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {productKeys.map((productName) => {
-                    const metrics = data.products[productName];
-                    if (!metrics) return null;
+                  <tr className="executive-row">
+                    
+                    {/* COL 1: Item Profile (Name, Thumbnail avatar, and Rating markers) */}
+                    <td className="td-product-profile">
+                      <div className="product-profile-box">
+                        <img 
+                          src={matrixOutput.image} 
+                          alt="Product Specimen Avatar" 
+                          className="product-avatar-img"
+                          onError={(e) => { e.currentTarget.src = "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=150&q=80"; }}
+                        />
+                        <div>
+                          <div className="profile-name">{matrixOutput.name}</div>
+                          <span className="profile-rating-badge">★ Rating: {matrixOutput.rating}</span>
+                        </div>
+                      </div>
+                    </td>
 
-                    return (
-                      <tr key={productName} className="executive-row">
-                        
-                        {/* Column 1: Core Target Description */}
-                        <td className="td-product-name">
-                          {productName}
-                        </td>
+                    {/* COL 2: AI-Extracted Specific Parameters Block */}
+                    <td className="td-specs-block">
+                      <div className="extracted-features-box">
+                        {matrixOutput.aiExtractedSpecs}
+                      </div>
+                    </td>
 
-                        {/* Column 2: Extracted Amazon Values */}
-                        <td className="td-marketplace-data">
-                          {metrics.amazon ? (
-                            <>
-                              <div className="listing-title-box" title={metrics.amazon.title}>
-                                {metrics.amazon.title}
-                              </div>
-                              <span className="price-pill-tag amazon">
-                                {metrics.amazon.price || "Listed (No Price)"}
-                              </span>
-                            </>
-                          ) : (
-                            <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>No direct match parsed</span>
-                          )}
-                        </td>
+                    {/* COL 3: Stock Levels & Pincode Routing Logistics */}
+                    <td className="td-logistic-node">
+                      <span className="status-stock-pill">{matrixOutput.inStock}</span>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.2rem' }}>
+                        Pin Route Destination: <strong>{matrixOutput.pincodeContext}</strong>
+                      </div>
+                      <div className="delivery-date-text">
+                        🚚 Est: {matrixOutput.deliveryEst}
+                      </div>
+                    </td>
 
-                        {/* Column 3: Extracted Flipkart Values */}
-                        <td className="td-marketplace-data">
-                          {metrics.flipkart ? (
-                            <>
-                              <div className="listing-title-box" title={metrics.flipkart.title}>
-                                {metrics.flipkart.title}
-                              </div>
-                              <div className="snippet-text-box">
-                                {metrics.flipkart.snippet}
-                              </div>
-                              <span className="price-pill-tag flipkart" style={{ marginTop: '0.4rem' }}>
-                                Active Search Match
-                              </span>
-                            </>
-                          ) : (
-                            <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>No direct match parsed</span>
-                          )}
-                        </td>
+                    {/* COL 4: Channel Sourcing Matrix with Links */}
+                    <td className="td-channel-pricing">
+                      <div className="channel-price-group">
+                        <span className="platform-label-tag">Amazon India Node</span>
+                        <div className="channel-numeric-price">{matrixOutput.amazonPrice}</div>
+                        <a href={matrixOutput.amazonLink} target="_blank" rel="noopener noreferrer" className="external-buy-link">
+                          Launch Buying Window ↗
+                        </a>
+                      </div>
+                      <div className="channel-price-group" style={{ margin: 0 }}>
+                        <span className="platform-label-tag">Flipkart Node</span>
+                        <div className="channel-numeric-price">{matrixOutput.flipkartPrice}</div>
+                        <a href={matrixOutput.flipkartLink} target="_blank" rel="noopener noreferrer" className="external-buy-link">
+                          Launch Buying Window ↗
+                        </a>
+                      </div>
+                    </td>
 
-                        {/* Column 4: Dynamic OpenAI Risk Audit */}
-                        <td className="td-ai-compliance">
-                          {metrics.verdict ? (
-                            <div className="inline-audit-badge">
-                              <h5 className="audit-badge-header">COMPLIANCE REPORT</h5>
-                              <p className="audit-badge-body">{metrics.verdict}</p>
-                            </div>
-                          ) : (
-                            <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Bypassed</span>
-                          )}
-                        </td>
-
-                      </tr>
-                    );
-                  })}
+                  </tr>
                 </tbody>
               </table>
             </div>
-          </div>
-        )}
 
-        {/* Empty Cache Fallback */}
-        {!loading && productKeys.length === 0 && !error && (
-          <div className="table-panel-card" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
-            Database buffer is empty. Ensure background workers are actively scraping targets.
+            {/* Premium Native SVG Chart Section */}
+            <div className="chart-container-panel">
+              <h3 className="chart-title">📈 Premium Price Trajectory Analysis Engine (1-Year Volatility Curve)</h3>
+              <div className="graph-display-canvas">
+                <svg viewBox="0 0 1000 200" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
+                  {/* Axis Grids */}
+                  <line x1="50" y1="10" x2="50" y2="170" className="svg-axis-line" />
+                  <line x1="50" y1="170" x2="980" y2="170" className="svg-axis-line" />
+                  
+                  {/* Map dynamic trend coordinates into a single elegant SVG polyline string */}
+                  {(() => {
+                    const priceArray = matrixOutput.priceHistory.map(h => h.price);
+                    const maxVal = Math.max(...priceArray) * 1.15;
+                    const minVal = Math.min(...priceArray) * 0.85;
+                    
+                    const points = matrixOutput.priceHistory.map((h, idx) => {
+                      const x = 50 + (idx * (930 / (matrixOutput.priceHistory.length - 1)));
+                      // Convert currency scales proportionally onto chart pixels inverse axis mapping
+                      const y = 170 - ((h.price - minVal) / (maxVal - minVal)) * 150;
+                      return { x, y, price: h.price, date: h.date };
+                    });
+
+                    const polylinePointsString = points.map(p => `${p.x},${p.y}`).join(' ');
+
+                    return (
+                      <>
+                        <polyline points={polylinePointsString} className="svg-trend-line" />
+                        {points.map((p, idx) => (
+                          <g key={idx}>
+                            <circle cx={p.x} cy={p.y} r="5" fill="#2563eb" stroke="#ffffff" strokeWidth="2" />
+                            <text x={p.x} y={p.y - 12} textAnchor="middle" className="svg-grid-text" fill="#0f172a">
+                              ₹{(p.price / 1000).toFixed(1)}k
+                            </text>
+                            <text x={p.x} y="190" textAnchor="middle" className="svg-grid-text">
+                              {p.date}
+                            </text>
+                          </g>
+                        ))}
+                      </>
+                    );
+                  })()}
+                </svg>
+              </div>
+            </div>
+
+            {/* Alternatives Competitive Module Section */}
+            <div className="alternatives-section-box">
+              <h3 className="chart-title">🤝 Cross-Market Competitors & Alternative Sourcing Paths</h3>
+              <div className="alternatives-grid">
+                {matrixOutput.similarItems?.map((altNode, idx) => (
+                  <div key={idx} className="alt-item-card">
+                    <div>
+                      <div className="alt-meta-name">{altNode.name}</div>
+                      <div className="alt-meta-platform">Target: {altNode.platform}</div>
+                    </div>
+                    <div className="alt-meta-price">{altNode.price}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
           </div>
         )}
 
